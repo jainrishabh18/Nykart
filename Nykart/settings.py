@@ -69,6 +69,8 @@ TEMPLATES = [
                 'django.contrib.messages.context_processors.messages',
                 # deployed this template seperately
                 'category.context_processors.menu_links',
+                # context processors below is giving error hence  commented it out will see it later.
+                # 'carts.context_processors.counter',
             ],
         },
     },
@@ -141,3 +143,10 @@ STATICFILES_DIRS = [
 MEDIA_URL = '/media/'
 
 MEDIA_ROOT = BASE_DIR /'media'
+
+
+from django.contrib.messages import constants as messages
+MESSAGE_TAGS = {
+    messages.ERROR: 'danger',
+    
+}
