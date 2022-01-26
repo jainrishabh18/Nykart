@@ -150,3 +150,13 @@ MESSAGE_TAGS = {
     messages.ERROR: 'danger',
     
 }
+
+# SMTP configuration
+# EMAIL PORT for gmail is 587
+EMAIL_HOST = 'smtp.gmail.com' 
+EMAIL_PORT = 587 
+EMAIL_HOST_USER = 'developertesting18@gmail.com'
+EMAIL_HOST_PASSWORD = 'vqftnxxbdjffmdkx'
+# enter password for above email id
+EMAIL_USE_TLS = True
+# tls above is generally used for port 587(gmail) generally ssl is used
