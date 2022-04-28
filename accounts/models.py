@@ -1,7 +1,5 @@
 #  Custom user model
 # (for loging in with email instead of username)
-
-
 from django.db import models
 # .
 from django.contrib.auth.models import AbstractBaseUser ,BaseUserManager
@@ -44,9 +42,6 @@ class MyAccountManager(BaseUserManager):
         user.is_superadmin = True
         user.save(using=self._db)
         return user
-
-
-
 
 
 

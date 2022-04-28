@@ -15,6 +15,9 @@ from django.utils.encoding import force_bytes
 from django.contrib.auth.tokens import default_token_generator
 from django.core.mail import EmailMessage
 
+from carts.models import CartItem,Cart
+from carts.views import _cart_id
+
 # Create your views here.
 def register(request):
     if request.method == 'POST':
@@ -67,6 +70,56 @@ def login(request):
 
         user = auth.authenticate(email=email, password=password)
         if user is not None:
+            try:
+                # print('inside try block')
+                cart = Cart.objects.get(cart_id = _cart_id(request))
+                is_cart_item_exists = CartItem.objects.filter(cart = cart).exists() 
+                # print(is_cart_item_exists) 
+                if is_cart_item_exists:
+                    cart_item = CartItem.objects.filter(cart = cart)
+                    # print(cart_item)
+
+                # getting product variation by cart id
+                    product_variation = []
+                    for item in cart_item:
+                        variation = item.variations.all()
+                        product_variation.append(list(variation))
+
+                    
+                # get the cart item from user to access his product variations
+                    cart_item = CartItem.objects.filter(user=user)
+                    ex_var_list = []
+                    id = []
+                    for item in cart_item:
+                        existing_variation = item.variations.all()
+                        ex_var_list.append(list(existing_variation))
+                        id.append(item.id)
+
+                    # product variation = [1,2,3,4]
+                    # ex_var_list = [4,5,6,3]
+                    # now above to list have common as 3,4 so to check it and increasing the count of the variation of that product 
+                    # is done in below code
+
+                    for pr in product_variation:
+                        if pr in ex_var_list:
+                            index = ex_var_list.index(pr)
+                            item_id = id[index]
+                            item = CartItem.objects.get(id=item_id)
+                            item.quantity += 1
+                            item.user = user
+                            item.save()
+                        else:
+                            cart_item = CartItem.objects.filter(cart = cart)
+                            for item in cart_item:
+                                item.user = user  
+                                item.save()  
+
+
+
+                              
+            except:
+                # print('inside except block')
+                pass
             auth.login(request,user)
             # messages.success(request, 'you are now logged in')
             return redirect('dashboard')

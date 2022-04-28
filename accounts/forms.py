@@ -1,9 +1,7 @@
 # from tkinter import Widget
 from django import forms
 from .models import Account
-
 # we are using django model forms  for our website
-
 class RegistrationForm(forms.ModelForm):
 
     #  widget handles  rendering of HTML, and extraction of data from a GET/POST dictionary that corresponds to widget
@@ -27,7 +25,6 @@ class RegistrationForm(forms.ModelForm):
     def clean(self):
 
         # The clean() method on a Field subclass is responsible for running to_python() , validate() , and run_validators() in the correct order and propagating their errors. If, at any time, any of the methods raise ValidationError , the validation stops and that error is raised.
-
 
         # super is fetching and modifing data of registrationform field
         cleaned_data = super(RegistrationForm, self).clean()
